@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkerController;
-use OpenApi\Generator;
 use OpenApi\scan;
 
 
@@ -27,10 +26,8 @@ Route::get('/dashboard', 'App\Http\Controllers\WorkerController@Myview')->name('
 
 
 
-Route::get('/api/documentation', function () {
-    $openapi = Generator::scan([app_path('Http/Controllers')]);
-    return response()->json($openapi);
-});
+
+
 Route::get('/api/docs', function () {
     return view('swagger');
 });

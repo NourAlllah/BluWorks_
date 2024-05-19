@@ -1,0 +1,177 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "bluworks HR API",
+        "description": "API for worker clock-in and clock-out functionalities",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/worker/clock-in": {
+            "post": {
+                "tags": [
+                    "Worker"
+                ],
+                "summary": "Clock in a worker",
+                "description": "Record a clock-in for a worker",
+                "operationId": "1f516bfb647a77397c892e9c25aca6ef",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "worker_id",
+                                    "timestamp",
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "properties": {
+                                    "worker_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "timestamp": {
+                                        "type": "integer",
+                                        "example": 1625247600
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 30.048143
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 31.236892
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Clock-in successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Clock-in successful."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error or other errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Validation error details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/worker/clock-ins": {
+            "get": {
+                "tags": [
+                    "Worker"
+                ],
+                "summary": "Get clock-ins for a worker",
+                "description": "Retrieve the list of clock-ins for a specific worker based on worker ID",
+                "operationId": "4d9241a4dfc578a050f0239b8712b753",
+                "parameters": [
+                    {
+                        "name": "worker_id",
+                        "in": "query",
+                        "description": "ID of the worker to get clock-ins for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of clock-ins",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "worker_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "timestamp": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-05-18 13:10:20"
+                                            },
+                                            "latitude": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 30.048143
+                                            },
+                                            "longitude": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 31.236892
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-05-18 13:10:20"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2024-05-18 13:10:20"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The worker_id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
