@@ -6,6 +6,21 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
+use OpenApi\Attributes as OA;
+
+/**
+ * @OA\Info(
+ *   title="bluworks HR API",
+ *   version="1.0.0",
+ *   description="API for worker clock-in and clock-out functionalities",
+ * )
+ */
+
+ /**
+   * @OA\PathItem (
+   *   path="worker"  // Base path for worker-related endpoints
+   * )
+   **/
 class WorkerController extends Controller
 {
     protected $workerModel;
@@ -23,6 +38,40 @@ class WorkerController extends Controller
 
         return view('ClicksIn')->with(['worker'=> $worker_data]); 
     }
+
+    
+   /**
+   * @OA\Post(
+   *   path="/worker/clock-in",
+   *   summary="Clock in a worker",
+   *   description="Record a clock-in for a worker",
+   *   tags={"Worker"},
+   *   @OA\RequestBody(
+   *     required=true,
+   *     @OA\JsonContent(
+   *       required={"worker_id", "timestamp", "latitude", "longitude"},
+   *       @OA\Property(property="worker_id", type="integer", example=1),
+   *       @OA\Property(property="timestamp", type="integer", example=1625247600),
+   *       @OA\Property(property="latitude", type="number", format="float", example=30.048143),
+   *       @OA\Property(property="longitude", type="number", format="float", example=31.236892)
+   *     )
+   *   ),
+   *   @OA\Response(
+   *     response=200,
+   *     description="Clock-in successful",
+   *     @OA\JsonContent(
+   *       @OA\Property(property="message", type="string", example="Clock-in successful.")
+   *     )
+   *   ),
+   *   @OA\Response(
+   *     response=422,
+   *     description="Validation error or other errors",
+   *     @OA\JsonContent(
+   *       @OA\Property(property="error", type="string", example="Validation error details")
+   *     )
+   *   )
+   * )
+   */
 
     public function clockIn(Request $request){
 
@@ -59,6 +108,48 @@ class WorkerController extends Controller
         return response()->json(['message' => 'Clock-in successful.'], 200);
         
     }
+
+    /**
+   * @OA\Get(
+   *   path="/worker/clock-ins",
+   *   summary="Get clock-ins for a worker",
+   *   description="Retrieve the list of clock-ins for a specific worker based on worker ID",
+   *   tags={"Worker"},
+   *   @OA\Parameter(
+   *     name="worker_id",
+   *     in="query",
+   *     description="ID of the worker to get clock-ins for",
+   *     required=true,
+   *     @OA\Schema(type="integer")
+   *   ),
+   *   @OA\Response(
+   *     response=200,
+   *     description="List of clock-ins",
+   *     @OA\JsonContent(
+   *       type="array",
+   *       @OA\Items(
+   *         type="object",
+   *         
+   *            @OA\Property(property="id", type="integer", example=1),
+   *            @OA\Property(property="worker_id", type="integer", example=1),
+   *             @OA\Property(property="timestamp", type="string", format="date-time", example="2024-05-18 13:10:20"),
+   *             @OA\Property(property="latitude", type="number", format="float", example=30.048143),
+   *             @OA\Property(property="longitude", type="number", format="float", example=31.236892),
+   *             @OA\Property(property="created_at", type="string", format="date-time", example="2024-05-18 13:10:20"),
+   *             @OA\Property(property="updated_at", type="string", format="date-time", example="2024-05-18 13:10:20")
+   *    
+   *       )
+   *     )
+   *   ),
+   *   @OA\Response(
+   *     response=422,
+   *     description="Validation error",
+   *     @OA\JsonContent(
+   *       @OA\Property(property="error", type="string", example="The worker_id field is required.")
+   *     )
+   *   )
+   * )
+   */
 
     public function getClockIns(Request $request)
     {
