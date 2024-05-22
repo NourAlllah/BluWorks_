@@ -1,8 +1,12 @@
 
 document.addEventListener('DOMContentLoaded', function() {
             
+    const url = new URL(window.location.href); // Get current URL
+    const searchParams = url.searchParams; // Get search parameters
+
+    const id = searchParams.get('workerId');
     document.getElementById('clock_in_form').addEventListener('submit', function(event) {
-        handle_clickin_request('{{ $worker->id }}');
+        handle_clickin_request(id);
         
     });
 
@@ -17,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
         navigator.geolocation.getCurrentPosition(
             function(position) {
             
-                const latitude = position.coords.latitude; /* 30.048143 */
-                const longitude = position.coords.longitude;  /* 31.236892 */
+                const latitude = /* position.coords.latitude; */ 30.048143 /* this is valid test coordinates */
+                const longitude = /* position.coords.longitude; */  31.236892 /* this is valid test coordinates */
 
                 fetch('/api/worker/clock-in', {
                     method: 'POST',
@@ -35,18 +39,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(response => {
 
-
+                    console.log(response);
                     return response.json();
 
                 })
                 .then(data => {
                    if (data.error) {
+                    
+                       
                         Swal.fire({
                             title: 'Error!',
                             text: data.error,
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
+                        
+                        if ( 'worker_id' in data.error || 'timestamp' in data.error || 
+                            'latitude' in data.error || 'longitude' in data.error) {
+                            for (const key in data.error) {
+                                const value = data.error[key];
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: value,
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                break; 
+                            }
+                        } 
+                        
                     } else {
                         const message = data.message;
                         Swal.fire({
@@ -58,15 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
 
-                })
-                .catch(error => {
-                    Swal.fire({
-                        title: 'Error!',
-                        text:'There was a problem with the fetch operation:'+ error,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
                 });
+               
                 document.querySelector('#clock_in_form button[type="submit"]').disabled = false;
 
             },
@@ -88,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('worker_clock_ins_history').addEventListener('submit', function(event) {
         
-        get_worker_clickIns('{{ $worker->id }}');
+        get_worker_clickIns(id);
 
     });
 
