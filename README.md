@@ -33,3 +33,49 @@ Seeds:
 - Database seeding is used to populate the database with initial data. Seeders are used to create sample users and admins for testing purposes.
 
 ---------------------
+
+*Setup and Installation*
+
+1- Clone the repository:
+
+        git clone https://github.com/NourAlllah/BluWorks_.git
+
+2- Update dependencies:
+
+       composer update    
+
+3- Configure the .env File:
+  
+      cp .env.example .env
+
+      # Update the following lines in the .env file
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=your_database_name
+        DB_USERNAME=your_database_username
+        DB_PASSWORD=your_database_password
+      
+4- Generate Application Key:
+
+        php artisan key:generate
+        
+5- php artisan migrate:
+
+        php artisan migrate
+
+6- Seed the database:
+
+        php artisan db:seed
+
+7- Install Vite
+
+        npm install vite --save-dev
+
+8- Start the development server:
+
+        php artisan serve
+        
+9- php artisan serve
+
+        npm run dev
