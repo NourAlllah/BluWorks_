@@ -47,26 +47,40 @@ document.addEventListener('DOMContentLoaded', function() {
                    if (data.error) {
                     
                        
+                       if (data.error) {
+                    
+                        if (typeof data.error === 'object' && data.error !== null){
+                            if ( 'worker_id' in data.error || 'timestamp' in data.error || 
+                                'latitude' in data.error || 'longitude' in data.error) {
+                                for (const key in data.error) {
+                                    const value = data.error[key];
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: value,
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    break; 
+                                }
+                            } 
+                        }else{
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.error,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+
+                    } else {
+                        const message = data.message;
                         Swal.fire({
-                            title: 'Error!',
-                            text: data.error,
-                            icon: 'error',
+                            title: 'Success!',
+                            text: message,
+                            icon: 'success',
                             confirmButtonText: 'OK'
                         });
-                        
-                        if ( 'worker_id' in data.error || 'timestamp' in data.error || 
-                            'latitude' in data.error || 'longitude' in data.error) {
-                            for (const key in data.error) {
-                                const value = data.error[key];
-                                    Swal.fire({
-                                        title: 'Error!',
-                                        text: value,
-                                        icon: 'error',
-                                        confirmButtonText: 'OK'
-                                    });
-                                break; 
-                            }
-                        } 
+                    }
                         
                     } else {
                         const message = data.message;
