@@ -44,10 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 })
                 .then(data => {
-                   if (data.error) {
-                    
-                       
-                       if (data.error) {
+                    if (data.error) {
                     
                         if (typeof data.error === 'object' && data.error !== null){
                             if ( 'worker_id' in data.error || 'timestamp' in data.error || 
@@ -81,18 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             confirmButtonText: 'OK'
                         });
                     }
-                        
-                    } else {
-                        const message = data.message;
-                        Swal.fire({
-                            title: 'Success!',
-                            text: message,
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        });
-                    }
-
-
                 });
                
                 document.querySelector('#clock_in_form button[type="submit"]').disabled = false;
