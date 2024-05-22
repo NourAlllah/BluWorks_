@@ -102,7 +102,7 @@ class Worker extends Model implements Authenticatable
 
         $currentDate = date('Y-m-d');
 
-        $sql = "SELECT COUNT(*) AS count FROM bluworks.clock_ins WHERE worker_id = ? AND DATE(timestamp) = ?";
+        $sql = "SELECT COUNT(*) AS count FROM clock_ins WHERE worker_id = ? AND DATE(timestamp) = ?";
         $result = DB::selectOne($sql, [$worker_id, $currentDate]);
 
         $count = $result ? $result->count : 0;
