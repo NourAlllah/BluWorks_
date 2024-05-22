@@ -1,8 +1,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
             
-    const url = new URL(window.location.href); // Get current URL
-    const searchParams = url.searchParams; // Get search parameters
+    const url = new URL(window.location.href); 
+    const searchParams = url.searchParams; 
 
     const id = searchParams.get('workerId');
     document.getElementById('clock_in_form').addEventListener('submit', function(event) {
@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
         navigator.geolocation.getCurrentPosition(
             function(position) {
             
-                const latitude = /* position.coords.latitude; */ 30.048143 /* this is valid test coordinates */
-                const longitude = /* position.coords.longitude; */  31.236892 /* this is valid test coordinates */
+                const latitude = position.coords.latitude; /* 30.048143 */ /* this is valid test coordinates */
+                const longitude = position.coords.longitude;  /* 31.236892  *//* this is valid test coordinates */
 
                 fetch('/api/worker/clock-in', {
                     method: 'POST',
